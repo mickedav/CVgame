@@ -13,10 +13,10 @@ Player = function(){
 	this.moving = false;
 	this.jumping = false;
 	this.jumpAvailable = false;
-	this.JUMP_MAX = 3;
-	this.jumpVelocity = 2;
+	this.JUMP_MAX = 5;
+	this.jumpVelocity = 0;
 	this.points = 0;
-	
+
 
 	this.SetPosition = function(x, y, mod){
 
@@ -77,7 +77,7 @@ Player = function(){
 			this.rect.y += this.gravity;
 		}
 
-		
+
 		this.animation.position.Set(this.rect.x , this.rect.y);
 		this.offsetX = this.rect.x;
 
@@ -98,8 +98,8 @@ Player = function(){
 	};
 
 	this.Draw = function(ctx){
-		
+
 		//this.rect.Draw(ctx);
-		this.animation.Draw(ctx); 
+		this.animation.Draw(ctx);
 	};
 };

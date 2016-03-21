@@ -37,7 +37,7 @@ Array.prototype.Remove = function(arg, all){
 Array.prototype.RemoveAt = function(position){
 	this.splice(position, 1);
 };
- 
+
 Array.prototype.Clear = function(){
 	this.length = 0;
 };
@@ -177,19 +177,19 @@ Color = function(r, g, b, a){
 	if(r != null){
 		this.r = r;
 	}
-		
+
 	if(g != null){
 		this.g = g;
 	}
-		
+
 	if(b != null){
 		this.b = b;
 	}
-		
+
 	if(a != null){
 		this.a = a;
 	}
-		
+
 
 	this.ToStandard = function(noAlpha){
 
@@ -198,7 +198,7 @@ Color = function(r, g, b, a){
 		}else{
 			return "rgb(" + this.r + "," + this.g + "," + this.b + ")";
 		}
-	};	
+	};
 };
 
 Rectangle = function(x, y, w, h){
@@ -227,7 +227,7 @@ Rectangle = function(x, y, w, h){
 		else if (shape.Contains(this.x - offset, this.y - offset) || shape.Contains(this.x + this.width - offset, this.y - offset) ||
 			shape.Contains(this.x - offset, this.y + this.height - offset) || shape.Contains(this.x + this.width - offset, this.y + this.height - offset)){
 			return true;
-		}	
+		}
 
 		return false;
 	};
@@ -305,7 +305,7 @@ Animation = function(width, height, row, column, limit, imgSrc, fps, columns, ro
 	};
 
 	this.Update = function(){
-		
+
 		this.cropPosition.x = this.width * this.column;
 		this.cropPosition.y = this.height * this.row;
 
@@ -364,7 +364,7 @@ Collision = function(level, player){
 				this.player.SetPosition(null, this.level.floor[i].y - this.player.rect.height);
 				this.player.jumpAvailable = true;
 				return true;
-			} 
+			}
 		}
 		return false;
 	};
@@ -372,11 +372,11 @@ Collision = function(level, player){
 	this.CheckPickups= function(){
 		for(var i = 0; i < this.level.pickUps.length; i++){
 			if(level.pickUps[i].Intersects(this.player.rect)){
-				
+
 				level.pickUps.RemoveAt(i);
 				player.points++;
 
-			} 
+			}
 		}
 	};
 };
@@ -415,13 +415,14 @@ document.documentElement.onkeydown = function(e){
 			break;
 		case 38:
 			input.up = true;
+
 			break;
 		case 39:
 			input.right = true;
 			break;
 		case 40:
 			input.down = true;
-			break;	
+			break;
 	}
 };
 
@@ -448,6 +449,6 @@ document.documentElement.onkeyup = function(e){
 			break;
 		case 40:
 			input.down = false;
-			break;	
+			break;
 	}
 };

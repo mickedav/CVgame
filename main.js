@@ -1,21 +1,25 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext('2d');
+
+var screenWidth = canvas.width;
+var screenHeight = canvas.height;
 ctx.fillstyle = "blue";
 ctx.font = "bold 26px Arial";
-
 canvas.style.width = canvas.width + "px";
 canvas.style.height = canvas.height + "px";
 
 input.offset = new Vector2(GetLeft(canvas), GetTop(canvas));
 
+//Game Init
 var player = new Player();
 player.SetPosition(player.offsetX);
-
-var level1 = new Level1();
+var level1 = new Level2(screenWidth, screenHeight);
 level1.Create();
 
 var level = level1;
 var collison = new Collision(level, player);
+
+
 var update = setInterval(function(){
 
 	player.Update();
@@ -26,14 +30,11 @@ var update = setInterval(function(){
 	}
 
 	if(level.toDeliver <= 0){
-		var level2 = new Level2();
+		var level2 = new Level2(screenWidth, screenHeight);
 		level2.Create();
 		level = level2;
 		player = new Player();
-
 		collison = new Collision(level, player);
-
-		
 	}
 
 }, 1);
@@ -52,4 +53,3 @@ var Draw = setInterval(function(){
 
 
 }, 33);
-
