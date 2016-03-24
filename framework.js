@@ -241,8 +241,7 @@ Rectangle = function(x, y, w, h){
 		}
 	};
 
-	this.Draw = function(ctx)
-	{
+	this.Draw = function(ctx){
 		ctx.fillStyle = this.color.ToStandard();
 		ctx.fillRect(this.x, this.y, this.width, this.height);
 	};
@@ -451,4 +450,10 @@ document.documentElement.onkeyup = function(e){
 			input.down = false;
 			break;
 	}
+};
+
+levelLoader = function(){
+
+	console.log('Fungerar');
+
 };

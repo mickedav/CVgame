@@ -1,6 +1,5 @@
 Level1 = function(screenWidth, screenHight){
 
-
 	this.screenWidth = screenWidth;
 	this.screenHeight = screenHeight;
 	this.black = new Color(0,0,0,1);
@@ -13,12 +12,13 @@ Level1 = function(screenWidth, screenHight){
 	this.logImg.src = "log.png";
 	this.millImg = new Image()
 	this.millImg.src = "saw2.png";
-	this.toDeliver = 15;
+	this.toDeliver = 1;
 	this.deliveryPoint = new Rectangle(1800 + 519, this.screenHeight - 43 - 50, 90, 50);
 	this.flash = 0;
-	this. inverter = 1;
+	this.inverter = 1;
 	this.name = "lvl1";
 
+	this.levelClear = false;
 
 
 	this.groundLvl = this.screenHeight - 43;
@@ -100,5 +100,19 @@ Level1 = function(screenWidth, screenHight){
 		}
 	};
 
+//ADD spacebar Action here, dependent on lvl
+	this.spacebarAction = function(player){
+		if (this.deliveryPoint.Intersects(player.rect)){
+			this.toDeliver -= player.points;
+			player.points = 0;
+		}
+	};
 
+	this.levelClearCheck = function(){
+		if(this.toDeliver <= 0){
+			//console.log('LvL1 Clear');
+			this.levelClear = true;
+		}
+
+	};
 };

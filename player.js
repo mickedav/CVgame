@@ -59,9 +59,9 @@ Player = function(){
 			this.Jump();
 		}
 
-		if(input.space && level.deliveryPoint.Intersects(this.rect)){
-			level.toDeliver -= player.points;
-			player.points = 0;
+		if(input.space){
+			level.spacebarAction(this);
+
 		}
 
 		if(this.jumping){
@@ -102,4 +102,8 @@ Player = function(){
 		//this.rect.Draw(ctx);
 		this.animation.Draw(ctx);
 	};
+
+	this.resetPlayerPos = function(){
+
+	}
 };

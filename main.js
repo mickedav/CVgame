@@ -13,27 +13,37 @@ input.offset = new Vector2(GetLeft(canvas), GetTop(canvas));
 //Game Init
 var player = new Player();
 player.SetPosition(player.offsetX);
-var level1 = new Level2(screenWidth, screenHeight);
+
+var level1 = new Level1(screenWidth, screenHeight);
+var level2 = new Level2(screenWidth, screenHeight);
+
 level1.Create();
+level2.Create();
 
 var level = level1;
 var collison = new Collision(level, player);
+
+levels = [level1, level2]
+
+
 
 
 var update = setInterval(function(){
 
 	player.Update();
 	collison.CheckPickups();
+	level.levelClearCheck();
 
 	if(!collison.CheckEnvironment()){
 		player.jumpAvailable = false;
 	}
 
-	if(level.toDeliver <= 0){
-		var level2 = new Level2(screenWidth, screenHeight);
-		level2.Create();
+	console.log(level.name);
+	if(level.levelClear == true){
+		console.log('Loading next lvl')
+
+
 		level = level2;
-		player = new Player();
 		collison = new Collision(level, player);
 	}
 

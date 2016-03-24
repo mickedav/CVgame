@@ -15,13 +15,15 @@ Level2 = function(screenWidth, screenHight){
 	this.forkImg = new Image()
 	this.forkImg.src = "fork.png";
 	this.name = "lvl2";
-	this.toPickUp = 0;
+
+
+	this.levelClear = false;
 
 	this.itemList = ['Apple', 'Oranges', 'Bananas'];
-
+	this.toPickUp = 3;
 	this.itemInInventory = false;
 
-	this.toDeliver = 15;
+
 	this.deliveryPoint = new Rectangle(1800 + 519, this.screenHeight - 43 - 50, 90, 50);
 	this.flash = 0;
 	this.inverter = 1;
@@ -90,5 +92,18 @@ Level2 = function(screenWidth, screenHight){
 
 	};
 
+	//ADD spacebar Action here, dependent on lvl
+		this.spacebarAction = function(player){
+			if (this.deliveryPoint.Intersects(player.rect)){
+				this.toDeliver -= player.points;
+				player.points = 0;
+			}
+		};
+
+	this.levelClearCheck = function(){
+			if(this.toPickUp <= 0){
+				console.log('hej');
+			}
+		}
 
 };
