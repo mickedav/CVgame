@@ -1,0 +1,9 @@
+@font-face{
+ font-family:"Arcade";
+ src:url('ARCADECLASSIC.TTF');
+}
+
+p {
+    color: blue;
+    font-family:"Arcade"
+}

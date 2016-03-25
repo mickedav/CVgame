@@ -1,13 +1,19 @@
 Level1 = function(screenWidth, screenHight){
 
+
 	this.screenWidth = screenWidth;
 	this.screenHeight = screenHeight;
 	this.black = new Color(0,0,0,1);
 	this.red = new Color(255,0,0,1);
 	this.floor = new Array();
 	this.pickUps = new Array();
+	this.backgroundOffset = 500
 	this.groundImg = new Image()
+	this.bgImg = new Image();
+
+	this.bgImg.src = "forestbg.gif"
 	this.groundImg.src = "ground.png";
+
 	this.logImg = new Image()
 	this.logImg.src = "log.png";
 	this.millImg = new Image()
@@ -20,45 +26,19 @@ Level1 = function(screenWidth, screenHight){
 
 	this.levelClear = false;
 
-
 	this.groundLvl = this.screenHeight - 43;
 
 	this.Draw = function(ctx, pos){
-
 		this.red.a = this.flash;
-				ctx.lineWidth = 3;
-
-		for(var i = 1; i < this.floor.length; i++){
-			if(this.floor[i].x < pos + this.screenWidth/2 + 172&& this.floor[i].x > pos - this.screenWidth/2 - 172){
-				ctx.drawImage(this.groundImg, this.floor[i].x , this.floor[i].y);
-			}
-
-
-		}
-		for(var i = 0; i < this.pickUps.length; i++){
-			if(this.pickUps[i].x < pos + this.screenWidth/2 + 172&& this.pickUps[i].x > pos - this.screenWidth/2 - 172){
-				ctx.drawImage(this.logImg, this.pickUps[i].x , this.pickUps[i].y);
-			}
-		}
-
-		for(var i = 0; i < this.floor[0].width/this.groundImg.width; i++){
-			ctx.drawImage(this.groundImg, this.floor[0].x + i*this.groundImg.width, this.floor[0].y);
-		}
-
-
-		ctx.drawImage(this.millImg, 1800, this.groundLvl - this.millImg.height + 6);
-		ctx.fillText("Logs to deliver: ",2070, this.groundLvl - this.millImg.height + 6);
-		ctx.fillText(this.toDeliver,2070 + 200, this.groundLvl - this.millImg.height + 6);
-				//this.pickUps[i].Draw(ctx);
-		this.deliveryPoint.DrawBoarder(ctx);
-		if(this.flash > 0.95){
-			this.inverter = -1;
-		}else if(this.flash < 0.005){
-			this.inverter = 1;
-		}
-
-		this.flash += 0.05*this.inverter;
-
+		ctx.lineWidth = 3;
+		ctx.font="30px Arcade";
+		this.drawBackground(ctx, pos);
+		this.drawSkyFloor(ctx, pos);
+		this.drawPickups(ctx, pos);
+		this.drawFloor(ctx, pos);
+		this.drawPictures(ctx, pos);
+		this.drawBorders(ctx, pos);
+		ctx.fillText(this.points, -(canvas.width/2) + 5 + this.offsetX, 28);
 	};
 
 	this.Create = function(){
@@ -120,5 +100,50 @@ Level1 = function(screenWidth, screenHight){
 			}
 		}
 	}
+
+	//DRAW METHODS
+	this.drawBackground = function(ctx, pos){
+		ctx.drawImage(this.bgImg, - this.backgroundOffset + pos/1.09, -200)
+		ctx.drawImage(this.bgImg, - this.backgroundOffset + this.bgImg.width + pos/1.09, -200)
+	};
+
+	this.drawSkyFloor = function(ctx, pos){
+		for(var i = 1; i < this.floor.length; i++){
+			if(this.floor[i].x < pos + this.screenWidth/2 + 172&& this.floor[i].x > pos - this.screenWidth/2 - 172){
+				ctx.drawImage(this.groundImg, this.floor[i].x , this.floor[i].y);
+			}
+		}
+	};
+
+	this.drawPickups = function(ctx, pos){
+		for(var i = 0; i < this.pickUps.length; i++){
+			if(this.pickUps[i].x < pos + this.screenWidth/2 + 172&& this.pickUps[i].x > pos - this.screenWidth/2 - 172){
+				ctx.drawImage(this.logImg, this.pickUps[i].x , this.pickUps[i].y);
+			}
+		}
+	};
+
+	this.drawFloor = function(ctx, pos){
+		for(var i = 0; i < this.floor[0].width/this.groundImg.width; i++){
+			ctx.drawImage(this.groundImg, this.floor[0].x + i*this.groundImg.width, this.floor[0].y);
+		}
+	};
+
+	this.drawPictures = function(ctx, pos){
+		ctx.drawImage(this.millImg, 1800, this.groundLvl - this.millImg.height + 6);
+		ctx.fillText("Logs to deliver: ",2070, this.groundLvl - this.millImg.height + 6);
+		ctx.fillText(this.toDeliver,2070 + 200, this.groundLvl - this.millImg.height + 6);
+	};
+
+	this.drawBorders = function(ctx, pos){
+		this.deliveryPoint.DrawBoarder(ctx);
+		if(this.flash > 0.95){
+			this.inverter = -1;
+		}else if(this.flash < 0.005){
+			this.inverter = 1;
+		}
+
+		this.flash += 0.05*this.inverter;
+	};
 
 };
