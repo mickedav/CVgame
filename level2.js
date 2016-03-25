@@ -8,26 +8,26 @@ Level2 = function(screenWidth, screenHight){
 	this.shelf = new Array();
 	this.pickUps = new Array();
 	this.pickPoints = new Array();
-	this.groundImg = new Image()
+	this.groundImg = new Image();
 	this.groundImg.src = "groundFactory.png";
-	this.shelfImg = new Image()
+	this.shelfImg = new Image();
 	this.shelfImg.src = "shelf.png";
-	this.forkImg = new Image()
+	this.forkImg = new Image();
 	this.forkImg.src = "fork.png";
 	this.name = "lvl2";
 
+	this.currentPickup = 0;
 
 	this.levelClear = false;
 
 	this.itemList = ['Apple', 'Oranges', 'Bananas'];
-	this.toPickUp = 3;
-	this.itemInInventory = false;
+	this.toPickUp = 0;
 
+	this.itemInInventory = false;
 
 	this.deliveryPoint = new Rectangle(1800 + 519, this.screenHeight - 43 - 50, 90, 50);
 	this.flash = 0;
 	this.inverter = 1;
-
 
 	this.groundLvl = this.screenHeight - 43;
 
@@ -35,7 +35,12 @@ Level2 = function(screenWidth, screenHight){
 		this.red.a = this.flash;
 		ctx.lineWidth = 3;
 
-		ctx.fillText(this.itemList[this.toPickUp], player.offsetX, 20);
+		if(this.itemInInventory == true){
+			ctx.fillText('Return: ' + this.itemList[this.currentPickup], player.offsetX, 20);
+		}
+		else{
+			ctx.fillText(this.itemList[this.currentPickup], player.offsetX, 20);
+		}
 
 		for(var i = 0; i < this.shelf.length; i++){
 				ctx.drawImage(this.shelfImg, this.shelf[i].x , this.shelf[i].y);
@@ -54,7 +59,6 @@ Level2 = function(screenWidth, screenHight){
 			y = this.pickPoints[i].y - 10;
 			ctx.fillText(this.itemList[i],x,y);
 		}
-
 
 		ctx.drawImage(this.forkImg, 1800 + 519, this.screenHeight - this.groundImg.height - 20);
 		this.deliveryPoint.DrawBoarder(ctx);
@@ -81,29 +85,34 @@ Level2 = function(screenWidth, screenHight){
 		for(var i = 0; i < 3; i++){
 			rand = 2 + Math.random() * 5;
 			rand = Math.round(rand);
-			//console.log(41.7*rand*(i*3));
 			this.pickPoints.push(new Rectangle(300 + (41.7*rand*(i*3)), this.screenHeight - 126, 40, 84));
 		}
-
 
 		for(var i = 0; i < 3; i++){
 			this.pickPoints[i].color = this.red;
 		}
-
 	};
 
 	//ADD spacebar Action here, dependent on lvl
-		this.spacebarAction = function(player){
-			if (this.deliveryPoint.Intersects(player.rect)){
-				this.toDeliver -= player.points;
-				player.points = 0;
-			}
-		};
+	this.spacebarAction = function(player){
+		if (this.deliveryPoint.Intersects(player.rect) && this.itemInInventory == true){
+			this.itemInInventory = false;
+			this.currentPickup++;
+		}
+	};
 
 	this.levelClearCheck = function(){
 			if(this.toPickUp <= 0){
-				console.log('hej');
+
 			}
 		}
+
+	this.levelCollison = function(player){
+		for(var i = 0; i < this.pickPoints.length; i++){
+			if(this.pickPoints[this.currentPickup].Intersects(player.rect) && this.itemInInventory == false){
+				this.itemInInventory = true;
+			}
+		}
+	};
 
 };

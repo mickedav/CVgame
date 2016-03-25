@@ -368,15 +368,13 @@ Collision = function(level, player){
 		return false;
 	};
 
+
+	this.CheckLevelColision = function(){
+
+	}
+
 	this.CheckPickups= function(){
-		for(var i = 0; i < this.level.pickUps.length; i++){
-			if(level.pickUps[i].Intersects(this.player.rect)){
 
-				level.pickUps.RemoveAt(i);
-				player.points++;
-
-			}
-		}
 	};
 };
 
@@ -450,10 +448,4 @@ document.documentElement.onkeyup = function(e){
 			input.down = false;
 			break;
 	}
-};
-
-levelLoader = function(){
-
-	console.log('Fungerar');
-
 };

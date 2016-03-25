@@ -14,37 +14,35 @@ input.offset = new Vector2(GetLeft(canvas), GetTop(canvas));
 var player = new Player();
 player.SetPosition(player.offsetX);
 
+var currentLevel = 1;
+
 var level1 = new Level1(screenWidth, screenHeight);
 var level2 = new Level2(screenWidth, screenHeight);
 
 level1.Create();
 level2.Create();
 
-var level = level1;
+var levels = [level1, level2];
+
+var level = levels[currentLevel];
 var collison = new Collision(level, player);
-
-levels = [level1, level2]
-
-
-
 
 var update = setInterval(function(){
 
 	player.Update();
-	collison.CheckPickups();
+	level.levelCollison(player);
 	level.levelClearCheck();
 
 	if(!collison.CheckEnvironment()){
 		player.jumpAvailable = false;
 	}
 
-	console.log(level.name);
 	if(level.levelClear == true){
 		console.log('Loading next lvl')
-
-
-		level = level2;
+		level = levels[currentLevel + 1];
 		collison = new Collision(level, player);
+		player.resetPlayerPos();
+		//player.resetPlayerPos();
 	}
 
 }, 1);
@@ -59,6 +57,8 @@ var Draw = setInterval(function(){
 
 
 	ctx.restore();
+
+
 
 
 

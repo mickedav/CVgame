@@ -12,7 +12,7 @@ Level1 = function(screenWidth, screenHight){
 	this.logImg.src = "log.png";
 	this.millImg = new Image()
 	this.millImg.src = "saw2.png";
-	this.toDeliver = 1;
+	this.toDeliver = 15;
 	this.deliveryPoint = new Rectangle(1800 + 519, this.screenHeight - 43 - 50, 90, 50);
 	this.flash = 0;
 	this.inverter = 1;
@@ -29,7 +29,6 @@ Level1 = function(screenWidth, screenHight){
 				ctx.lineWidth = 3;
 
 		for(var i = 1; i < this.floor.length; i++){
-			//this.floor[i].Draw(ctx);
 			if(this.floor[i].x < pos + this.screenWidth/2 + 172&& this.floor[i].x > pos - this.screenWidth/2 - 172){
 				ctx.drawImage(this.groundImg, this.floor[i].x , this.floor[i].y);
 			}
@@ -39,9 +38,7 @@ Level1 = function(screenWidth, screenHight){
 		for(var i = 0; i < this.pickUps.length; i++){
 			if(this.pickUps[i].x < pos + this.screenWidth/2 + 172&& this.pickUps[i].x > pos - this.screenWidth/2 - 172){
 				ctx.drawImage(this.logImg, this.pickUps[i].x , this.pickUps[i].y);
-				//this.pickUps[i].Draw(ctx);
 			}
-
 		}
 
 		for(var i = 0; i < this.floor[0].width/this.groundImg.width; i++){
@@ -110,9 +107,18 @@ Level1 = function(screenWidth, screenHight){
 
 	this.levelClearCheck = function(){
 		if(this.toDeliver <= 0){
-			//console.log('LvL1 Clear');
 			this.levelClear = true;
 		}
 
 	};
+
+	this.levelCollison = function(player){
+		for(var i = 0; i < this.pickUps.length; i++){
+			if(this.pickUps[i].Intersects(player.rect)){
+				this.pickUps.RemoveAt(i);
+				player.points++;
+			}
+		}
+	}
+
 };

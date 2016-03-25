@@ -61,7 +61,6 @@ Player = function(){
 
 		if(input.space){
 			level.spacebarAction(this);
-
 		}
 
 		if(this.jumping){
@@ -98,12 +97,11 @@ Player = function(){
 	};
 
 	this.Draw = function(ctx){
-
-		//this.rect.Draw(ctx);
 		this.animation.Draw(ctx);
 	};
 
 	this.resetPlayerPos = function(){
-
+			this.offsetX = 0;
+			this.offsetY = 0;
 	}
 };
