@@ -5,7 +5,7 @@ Player = function(){
 	this.offsetY = 0;
 	this.rect = new Rectangle(0, 300, 12, 50);
 	//this.rect.color = new Color(0, 0, 0, 1);
-	this.speed = 2;
+	this.speed = 1;
 	this.gravity = 2;
 
 	this.animation = new Animation(64, 64, 0, 0, 36, "walk.png", 12, 4, 9);
@@ -13,14 +13,14 @@ Player = function(){
 	this.moving = false;
 	this.jumping = false;
 	this.jumpAvailable = false;
-	this.JUMP_MAX = 5;
+	this.JUMP_MAX = 3.5;
 	this.jumpVelocity = 0;
 	this.points = 0;
 
 
 	this.SetPosition = function(x, y, mod){
 
-		if(mod ==null || !mod){
+		if(mod == null || !mod){
 			if(x != null){
 				this.rect.x = x + this.offsetX;
 			}
@@ -101,7 +101,8 @@ Player = function(){
 	};
 
 	this.resetPlayerPos = function(){
-			this.offsetX = 0;
-			this.offsetY = 0;
+		this.offsetX = 0;
+		this.offsetY = 300;
+		this.SetPosition(0,0);
 	}
 };

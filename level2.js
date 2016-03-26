@@ -16,6 +16,7 @@ Level2 = function(screenWidth, screenHight){
 	this.bgImg = new Image();
 	this.bgImg2 = new Image();
 
+	this.test = new Audio("coin.wav")
 	this.backgroundOffset = 500
 
 	this.forkImg.src = "fork.png";
@@ -45,16 +46,13 @@ Level2 = function(screenWidth, screenHight){
 		ctx.fillStyle= '#ffffff';
 		ctx.font="30px Arcade";
 
-
 		this.drawBackground(ctx, pos);
-		this.drawStatusText(ctx, pos);
 		this.drawShelfs(ctx, pos);
 		this.drawFloor(ctx, pos);
 		this.drawPickPointBorders(ctx, pos);
 		this.drawPickList(ctx, pos);
 		this.drawDeliveryPoint(ctx, pos);
-
-
+		this.drawStatusWindow(ctx, pos);
 
 	};
 
@@ -83,6 +81,10 @@ Level2 = function(screenWidth, screenHight){
 		if (this.deliveryPoint.Intersects(player.rect) && this.itemInInventory == true){
 			this.itemInInventory = false;
 			this.currentPickup++;
+			this.test.pause();
+			this.test.currentTime = 0;
+			this.test.play();
+
 		}
 	};
 
@@ -95,6 +97,10 @@ Level2 = function(screenWidth, screenHight){
 		for(var i = 0; i < this.pickPoints.length; i++){
 			if(this.pickPoints[this.currentPickup].Intersects(player.rect) && this.itemInInventory == false){
 				this.itemInInventory = true;
+				this.test.pause();
+				this.test.currentTime = 0;
+				this.test.play();
+
 			}
 		}
 	};
@@ -107,14 +113,25 @@ Level2 = function(screenWidth, screenHight){
 		ctx.drawImage(this.bgImg, - this.backgroundOffset + this.bgImg.width + pos/1.09, 265)
 	};
 
-	this.drawStatusText = function(ctx, pos){
+	this.drawStatusWindow = function(ctx, pos){
+		var borderWidth = 4;
+		ctx.fillStyle = "#ffffff"
+		ctx.fillRect((-this.screenWidth/2) + 10 + pos - (borderWidth/2), 10 - (borderWidth/2), 150 + borderWidth,102 + borderWidth);
+		ctx.fillStyle = "#000000"
+		ctx.fillRect((-this.screenWidth/2) + 10 + pos, 10,150,100);
+		ctx.fillStyle = "#ffffff"
+		ctx.fillText(this.name, -this.screenWidth/2 + 20 + pos, 35)
+
 		if(this.itemInInventory == true){
-			ctx.fillText('Return: ' + this.itemList[this.currentPickup], player.offsetX, 30);
+			ctx.fillText('Return: ',  -this.screenWidth/2 + 20 + pos, 55);
+			ctx.fillText(this.itemList[this.currentPickup],  -this.screenWidth/2 + 20 + pos, 75);
 		}
 		else{
-			ctx.fillText(this.itemList[this.currentPickup], player.offsetX, 30);
+			ctx.fillText('Pick up:',  -this.screenWidth/2 + 20 + pos, 55);
+			ctx.fillText(this.itemList[this.currentPickup],  -this.screenWidth/2 + 20 + pos, 75);
 		}
-	};
+	}
+
 
 	this.drawShelfs = function(ctx, pos){
 		for(var i = 0; i < this.shelf.length; i++){

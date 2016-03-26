@@ -1,6 +1,5 @@
 Level1 = function(screenWidth, screenHight){
 
-
 	this.screenWidth = screenWidth;
 	this.screenHeight = screenHeight;
 	this.black = new Color(0,0,0,1);
@@ -11,18 +10,23 @@ Level1 = function(screenWidth, screenHight){
 	this.groundImg = new Image()
 	this.bgImg = new Image();
 
+	this.points = 0;
+	this.test = new Audio("coin.wav")
+
 	this.bgImg.src = "forestbg.gif"
 	this.groundImg.src = "ground.png";
 
 	this.logImg = new Image()
 	this.logImg.src = "log.png";
+	this.signImg = new Image()
+	this.signImg.src = "info.png";
 	this.millImg = new Image()
 	this.millImg.src = "saw2.png";
 	this.toDeliver = 15;
 	this.deliveryPoint = new Rectangle(1800 + 519, this.screenHeight - 43 - 50, 90, 50);
 	this.flash = 0;
 	this.inverter = 1;
-	this.name = "lvl1";
+	this.name = "Level 1";
 
 	this.levelClear = false;
 
@@ -38,7 +42,8 @@ Level1 = function(screenWidth, screenHight){
 		this.drawFloor(ctx, pos);
 		this.drawPictures(ctx, pos);
 		this.drawBorders(ctx, pos);
-		ctx.fillText(this.points, -(canvas.width/2) + 5 + this.offsetX, 28);
+		this.drawStatusWindow(ctx, pos);
+
 	};
 
 	this.Create = function(){
@@ -79,9 +84,10 @@ Level1 = function(screenWidth, screenHight){
 
 //ADD spacebar Action here, dependent on lvl
 	this.spacebarAction = function(player){
+
 		if (this.deliveryPoint.Intersects(player.rect)){
-			this.toDeliver -= player.points;
-			player.points = 0;
+			this.toDeliver -= this.points;
+			this.points = 0;
 		}
 	};
 
@@ -96,7 +102,12 @@ Level1 = function(screenWidth, screenHight){
 		for(var i = 0; i < this.pickUps.length; i++){
 			if(this.pickUps[i].Intersects(player.rect)){
 				this.pickUps.RemoveAt(i);
-				player.points++;
+
+				this.test.pause();
+				this.test.currentTime = 0;
+				this.test.play();
+
+				this.points++;
 			}
 		}
 	}
@@ -129,10 +140,22 @@ Level1 = function(screenWidth, screenHight){
 		}
 	};
 
+	this.drawStatusWindow = function(ctx, pos){
+		var borderWidth = 4;
+		ctx.fillStyle = "#ffffff"
+		ctx.fillRect((-this.screenWidth/2) + 10 + pos - (borderWidth/2), 10 - (borderWidth/2), 150 + borderWidth,102 + borderWidth);
+		ctx.fillStyle = "#000000"
+		ctx.fillRect((-this.screenWidth/2) + 10 + pos, 10,150,100);
+		ctx.fillStyle = "#ffffff"
+		ctx.fillText(this.name, -this.screenWidth/2 + 20 + pos, 35)
+		ctx.fillText('Logs: '+ this.points, -this.screenWidth/2 + 20 + pos, 55)
+	}
+
 	this.drawPictures = function(ctx, pos){
 		ctx.drawImage(this.millImg, 1800, this.groundLvl - this.millImg.height + 6);
 		ctx.fillText("Logs to deliver: ",2070, this.groundLvl - this.millImg.height + 6);
 		ctx.fillText(this.toDeliver,2070 + 200, this.groundLvl - this.millImg.height + 6);
+		ctx.drawImage(this.signImg, 0, this.groundLvl - this.signImg.height + 6)
 	};
 
 	this.drawBorders = function(ctx, pos){
