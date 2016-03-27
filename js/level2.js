@@ -9,32 +9,38 @@ Level2 = function(screenWidth, screenHight){
 	this.pickUps = new Array();
 	this.pickPoints = new Array();
 	this.groundImg = new Image();
-	this.groundImg.src = "groundFactory.png";
+	this.groundImg.src = "img/groundFactory.png";
 	this.shelfImg = new Image();
-	this.shelfImg.src = "shelf.png";
+	this.shelfImg.src = "img/shelf.png";
 	this.forkImg = new Image();
 	this.bgImg = new Image();
 	this.bgImg2 = new Image();
 
-	this.test = new Audio("coin.wav")
+	this.signImg = new Image()
+	this.signImg.src = "img/info.png";
+	this.test = new Audio("res/coin.wav")
 	this.backgroundOffset = 500
+	this.dialogSize = 0;
 
-	this.forkImg.src = "fork.png";
-	this.bgImg.src = "factorybg.png"
-	this.bgImg2.src = "factorybg2.jpg"
+	this.forkImg.src = "img/fork.png";
+	this.bgImg.src = "img/factorybg.png"
+	this.bgImg2.src = "img/factorybg2.jpg"
 
-	this.name = "lvl2";
+	this.name = "Level 2";
 
 	this.currentPickup = 0;
 
 	this.levelClear = false;
 
-	this.itemList = ['Apples', 'Oranges', 'Bananas'];
+	this.signInfo =['Welcome to level 2!', 'On this level you are', 'working at a warehouse.', 'Pick up the item on the', 'order and deliver the', 'product to the forklift', 'to the far right.']
+
+	this.itemList = ['Apples', 'Oranges', 'Bananas', 'None'];
 	this.toPickUp = 0;
 
 	this.itemInInventory = false;
 
 	this.deliveryPoint = new Rectangle(1800 + 519, this.screenHeight - 43 - 50, 90, 50);
+	this.infoPoint = new Rectangle(100,  this.screenHeight - 43 - 50, 40, 50);
 	this.flash = 0;
 	this.inverter = 1;
 
@@ -44,7 +50,7 @@ Level2 = function(screenWidth, screenHight){
 		this.red.a = this.flash;
 		ctx.lineWidth = 3;
 		ctx.fillStyle= '#ffffff';
-		ctx.font="30px Arcade";
+		ctx.font="16px Arcade";
 
 		this.drawBackground(ctx, pos);
 		this.drawShelfs(ctx, pos);
@@ -53,6 +59,19 @@ Level2 = function(screenWidth, screenHight){
 		this.drawPickList(ctx, pos);
 		this.drawDeliveryPoint(ctx, pos);
 		this.drawStatusWindow(ctx, pos);
+
+
+		if(this.infoPoint.Intersects(player.rect) && this.dialogSize < 10){
+			this.dialogSize += 2
+		}
+
+		if(this.dialogSize > 0 && this.infoPoint.Intersects(player.rect) == false){
+			this.dialogSize -= 2
+		}
+
+		if(this.dialogSize > 0){
+			drawInfoSign(ctx, pos)
+		}
 
 	};
 
@@ -89,18 +108,21 @@ Level2 = function(screenWidth, screenHight){
 	};
 
 	this.levelClearCheck = function(){
-			if(this.toPickUp <= 0){
+			if(this.currentPickup >= 3){
+				this.levelClear = true;
 			}
 		};
 
 	this.levelCollison = function(player){
-		for(var i = 0; i < this.pickPoints.length; i++){
-			if(this.pickPoints[this.currentPickup].Intersects(player.rect) && this.itemInInventory == false){
-				this.itemInInventory = true;
-				this.test.pause();
-				this.test.currentTime = 0;
-				this.test.play();
-
+		if(this.currentPickup < this.itemList.length - 1){
+			console.log(this.currentPickup);
+			for(var i = 0; i < this.pickPoints.length; i++){
+				if(this.pickPoints[this.currentPickup].Intersects(player.rect) && this.itemInInventory == false){
+					this.itemInInventory = true;
+					this.test.pause();
+					this.test.currentTime = 0;
+					this.test.play();
+				}
 			}
 		}
 	};
@@ -116,9 +138,9 @@ Level2 = function(screenWidth, screenHight){
 	this.drawStatusWindow = function(ctx, pos){
 		var borderWidth = 4;
 		ctx.fillStyle = "#ffffff"
-		ctx.fillRect((-this.screenWidth/2) + 10 + pos - (borderWidth/2), 10 - (borderWidth/2), 150 + borderWidth,102 + borderWidth);
+		ctx.fillRect((-this.screenWidth/2) + 10 + pos - (borderWidth/2), 10 - (borderWidth/2), 170 + borderWidth,102 + borderWidth);
 		ctx.fillStyle = "#000000"
-		ctx.fillRect((-this.screenWidth/2) + 10 + pos, 10,150,100);
+		ctx.fillRect((-this.screenWidth/2) + 10 + pos, 10,170,100);
 		ctx.fillStyle = "#ffffff"
 		ctx.fillText(this.name, -this.screenWidth/2 + 20 + pos, 35)
 
@@ -131,7 +153,6 @@ Level2 = function(screenWidth, screenHight){
 			ctx.fillText(this.itemList[this.currentPickup],  -this.screenWidth/2 + 20 + pos, 75);
 		}
 	}
-
 
 	this.drawShelfs = function(ctx, pos){
 		for(var i = 0; i < this.shelf.length; i++){
@@ -161,11 +182,13 @@ Level2 = function(screenWidth, screenHight){
 			x = (this.pickPoints[i].x - (textWidth.width/4));
 			y = this.pickPoints[i].y + 16;
 			ctx.fillText(this.itemList[i],x,y);
+
 		}
 	};
 
 	this.drawDeliveryPoint = function(ctx, pos){
 		ctx.drawImage(this.forkImg, 1800 + 519, this.screenHeight - this.groundImg.height - 20);
+		ctx.drawImage(this.signImg, this.infoPoint.x - 5, this.infoPoint.y)
 		this.deliveryPoint.DrawBoarder(ctx);
 		if(this.flash > 0.95){
 			this.inverter = -1;
@@ -174,6 +197,5 @@ Level2 = function(screenWidth, screenHight){
 		}
 		this.flash += 0.05*this.inverter;
 	};
-
 
 };

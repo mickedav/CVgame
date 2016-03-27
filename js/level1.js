@@ -1,4 +1,4 @@
-Level1 = function(screenWidth, screenHight){
+Level1 = function(screenWidth, screenHight, framework){
 
 	this.screenWidth = screenWidth;
 	this.screenHeight = screenHeight;
@@ -11,23 +11,29 @@ Level1 = function(screenWidth, screenHight){
 	this.bgImg = new Image();
 
 	this.points = 0;
-	this.test = new Audio("coin.wav")
+	this.test = new Audio("res/coin.wav")
 
-	this.bgImg.src = "forestbg.gif"
-	this.groundImg.src = "ground.png";
+	this.bgImg.src = "img/forestbg.gif"
+	this.groundImg.src = "img/ground.png";
 
 	this.logImg = new Image()
-	this.logImg.src = "log.png";
+	this.logImg.src = "img/log.png";
 	this.signImg = new Image()
-	this.signImg.src = "info.png";
+	this.signImg.src = "img/info.png";
 	this.millImg = new Image()
-	this.millImg.src = "saw2.png";
+	this.millImg.src = "img/saw2.png";
 	this.toDeliver = 15;
+	this.dialogSize = 0;
+
 	this.deliveryPoint = new Rectangle(1800 + 519, this.screenHeight - 43 - 50, 90, 50);
+	this.infoPoint = new Rectangle(100,  this.screenHeight - 43 - 50, 40, 50);
+
+	//this.groundLvl - this.signImg.height + 6
+
 	this.flash = 0;
 	this.inverter = 1;
 	this.name = "Level 1";
-
+	this.signInfo =['Welcome to level 1!', 'On this level you are ', 'working at a saw mill.', 'Pick up logs and', 'deliver them to the ', 'sawmill to the far right.', 'Use the space bar', 'to make the delivery.']
 	this.levelClear = false;
 
 	this.groundLvl = this.screenHeight - 43;
@@ -35,7 +41,7 @@ Level1 = function(screenWidth, screenHight){
 	this.Draw = function(ctx, pos){
 		this.red.a = this.flash;
 		ctx.lineWidth = 3;
-		ctx.font="30px Arcade";
+		ctx.font="16px Arcade";
 		this.drawBackground(ctx, pos);
 		this.drawSkyFloor(ctx, pos);
 		this.drawPickups(ctx, pos);
@@ -43,6 +49,18 @@ Level1 = function(screenWidth, screenHight){
 		this.drawPictures(ctx, pos);
 		this.drawBorders(ctx, pos);
 		this.drawStatusWindow(ctx, pos);
+
+		if(this.infoPoint.Intersects(player.rect) && this.dialogSize < 10){
+			this.dialogSize += 2
+		}
+
+		if(this.dialogSize > 0 && this.infoPoint.Intersects(player.rect) == false){
+			this.dialogSize -= 2
+		}
+
+		if(this.dialogSize > 0){
+			drawInfoSign(ctx, pos);
+		}
 
 	};
 
@@ -80,6 +98,8 @@ Level1 = function(screenWidth, screenHight){
 		for(var i = 0; i < this.pickUps.length; i++){
 			this.pickUps[i].color = this.red;
 		}
+
+
 	};
 
 //ADD spacebar Action here, dependent on lvl
@@ -110,7 +130,8 @@ Level1 = function(screenWidth, screenHight){
 				this.points++;
 			}
 		}
-	}
+
+	};
 
 	//DRAW METHODS
 	this.drawBackground = function(ctx, pos){
@@ -143,9 +164,9 @@ Level1 = function(screenWidth, screenHight){
 	this.drawStatusWindow = function(ctx, pos){
 		var borderWidth = 4;
 		ctx.fillStyle = "#ffffff"
-		ctx.fillRect((-this.screenWidth/2) + 10 + pos - (borderWidth/2), 10 - (borderWidth/2), 150 + borderWidth,102 + borderWidth);
+		ctx.fillRect((-this.screenWidth/2) + 10 + pos - (borderWidth/2), 10 - (borderWidth/2), 170 + borderWidth,102 + borderWidth);
 		ctx.fillStyle = "#000000"
-		ctx.fillRect((-this.screenWidth/2) + 10 + pos, 10,150,100);
+		ctx.fillRect((-this.screenWidth/2) + 10 + pos, 10,170,100);
 		ctx.fillStyle = "#ffffff"
 		ctx.fillText(this.name, -this.screenWidth/2 + 20 + pos, 35)
 		ctx.fillText('Logs: '+ this.points, -this.screenWidth/2 + 20 + pos, 55)
@@ -155,11 +176,12 @@ Level1 = function(screenWidth, screenHight){
 		ctx.drawImage(this.millImg, 1800, this.groundLvl - this.millImg.height + 6);
 		ctx.fillText("Logs to deliver: ",2070, this.groundLvl - this.millImg.height + 6);
 		ctx.fillText(this.toDeliver,2070 + 200, this.groundLvl - this.millImg.height + 6);
-		ctx.drawImage(this.signImg, 0, this.groundLvl - this.signImg.height + 6)
+		ctx.drawImage(this.signImg, this.infoPoint.x - 5, this.infoPoint.y)
 	};
 
 	this.drawBorders = function(ctx, pos){
 		this.deliveryPoint.DrawBoarder(ctx);
+
 		if(this.flash > 0.95){
 			this.inverter = -1;
 		}else if(this.flash < 0.005){
@@ -168,5 +190,7 @@ Level1 = function(screenWidth, screenHight){
 
 		this.flash += 0.05*this.inverter;
 	};
+
+
 
 };

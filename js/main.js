@@ -14,17 +14,20 @@ input.offset = new Vector2(GetLeft(canvas), GetTop(canvas));
 
 //Game Init
 var player = new Player();
+
 player.SetPosition(player.offsetX);
 
 var currentLevel = 0;
 
 var level1 = new Level1(screenWidth, screenHeight);
 var level2 = new Level2(screenWidth, screenHeight);
+var lastLevel = new Last(screenWidth, screenHeight);
 
 level1.Create();
 level2.Create();
+lastLevel.Create();
 
-var levels = [level1, level2];
+var levels = [level1, level2, lastLevel];
 
 var level = levels[currentLevel];
 var collison = new Collision(level, player);
@@ -55,7 +58,6 @@ var Draw = setInterval(function(){
 
 	level.Draw(ctx, player.rect.x);
 	player.Draw(ctx);
-
 
 	ctx.restore();
 

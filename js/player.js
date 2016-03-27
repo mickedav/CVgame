@@ -5,10 +5,10 @@ Player = function(){
 	this.offsetY = 0;
 	this.rect = new Rectangle(0, 300, 12, 50);
 	//this.rect.color = new Color(0, 0, 0, 1);
-	this.speed = 1;
+	this.speed = 1.5;
 	this.gravity = 2;
 
-	this.animation = new Animation(64, 64, 0, 0, 36, "walk.png", 12, 4, 9);
+	this.animation = new Animation(64, 64, 0, 0, 36, "img/walk.png", 12, 4, 9);
 
 	this.moving = false;
 	this.jumping = false;

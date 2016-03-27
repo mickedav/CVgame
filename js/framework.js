@@ -449,3 +449,20 @@ document.documentElement.onkeyup = function(e){
 			break;
 	}
 };
+
+drawInfoSign = function(ctx, pos){
+	var borderWidth = 8;
+	var dialogWidth = 40 * level.dialogSize;
+	var dialogHeight = 20 * level.dialogSize;
+	ctx.fillStyle = "#ffffff"
+	ctx.fillRect(20 + level.infoPoint.x - dialogWidth/2 - borderWidth/2, level.screenHeight/2 - borderWidth/2, dialogWidth + borderWidth, dialogHeight + borderWidth);
+	ctx.fillStyle = "#000000"
+	ctx.fillRect(20 + level.infoPoint.x - dialogWidth/2, level.screenHeight/2, dialogWidth, dialogHeight);
+	ctx.fillStyle = "#ffffff"
+	if(level.dialogSize >=10){
+		for(i = 0; i < level.signInfo.length; i++){
+			ctx.fillText(level.signInfo[i], 25 + level.infoPoint.x - dialogWidth/2, (25 * (i + 1)) + level.screenHeight/2 - borderWidth/2);
+		}
+	}
+
+};
